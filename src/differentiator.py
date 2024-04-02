@@ -3,29 +3,49 @@ import streamlit as st
 from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains.llm import LLMChain
+import textstat
 
 # Replace with your OpenAI API key
 from apikey import apikey
 os.environ['OPENAI_API_KEY'] = apikey
 
-st.set_page_config(
-        page_title="Differentiator",
-)
+MAX_ATTEMPTS = 3
 
 llm = OpenAI(temperature=0.9)
 
+def calculate_reading_age(text):
+    return textstat.flesch_kincaid_grade(text)
+
 def differentiate_document(document, target_age):
-    # Template
-    differentiation_template = PromptTemplate(
-        input_variables=['target_age', 'document'],
-        template="Adapt this document to suit a reading age of {target_age}. Document: {document}"
-    )
-    differentiation_chain = LLMChain(llm=llm, prompt=differentiation_template, verbose=True, output_key='reading_age')
-    differentiation_run = differentiation_chain.run(target_age=target_age, document=document)
-    # Use spinner to show loading message
-    with st.spinner(f'Processing for age {target_age}...'):
-        differentiation_run = differentiation_chain.run(target_age=target_age, document=document)
-    return differentiation_run
+    attempts = 0
+    matched_age = False  # To track if a match was found
+    MAX_ATTEMPTS = 3  # Avoid infinite loops, adjust as needed
+    while attempts < MAX_ATTEMPTS and not matched_age:
+        attempts += 1
+        # Template
+        differentiation_template = PromptTemplate(
+            input_variables=['target_age', 'document'],
+            template="Adapt this document to suit a reading age of {target_age}. Document: {document}"
+        )
+        differentiation_chain = LLMChain(llm=llm, prompt=differentiation_template, verbose=True, output_key='reading_age')
+        
+        # Use spinner to show loading message
+        with st.spinner(f'Processing for age {target_age}, attempt {attempts}...'):
+            differentiation_run = differentiation_chain.run(target_age=target_age, document=document)
+            output_text = differentiation_run  # Assuming differentiation_run returns the text directly
+
+            current_reading_age = calculate_reading_age(output_text)
+            if abs(current_reading_age - target_age) <= 1:  # Considering a close match as successful
+                matched_age = True
+                return output_text  # If reading age matches target, return the result
+            else:
+                st.warning(f'Recorded reading age: {current_reading_age}')
+                document = output_text  # Use the output as the new input for the next attempt
+        
+    if not matched_age:
+        st.warning("Generated text doesn't perfectly match the target reading age. Showing the closest match.")
+    
+    return output_text
 
 def main():
     st.title("Learning Material Differentiation")
@@ -36,8 +56,7 @@ def main():
         "Select target reading ages:", range(6, 20)
     )
 
-    # Added 'Go' button
-    if st.button('Differentiate'):
+    if st.button('Differentiate 🚀'):
         if content:
             # Process document for each selected age
             for age in selected_ages:
