@@ -9,7 +9,7 @@ from apikey import apikey
 # Config
 os.environ['OPENAI_API_KEY'] = apikey
 placeholder = open("src/storage/human_rights.txt", "r").read()
-llm = OpenAI(temperature=0.9, max_tokens=1000)
+llm = OpenAI(temperature=0.9, max_tokens=1000, model_name="gpt-3.5-turbo-instruct")
 MAX_ATTEMPTS = 3
 DEBUG_DISABLE_BRITISH_ENGLISH_CORRECTION = True
 
