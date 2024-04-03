@@ -4,14 +4,16 @@ from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from langchain.chains.llm import LLMChain
 import textstat
-from apikey import apikey
 
+    
 # Config
 OPEN_API_MODEL = "gpt-4-turbo-preview"
 # OPEN_API_MODEL = "gpt-3.5-turbo"
 MAX_ATTEMPTS = 3
 FK_GRADE_OFFSET = 1 # Offset to ensure the text is below the target grade. I don't know why, but ChatGPT seems to "aim high" with the FK grade
 DEBUG_DISABLE_BRITISH_ENGLISH_CORRECTION = True
+# placeholder_text = open("src/storage/human_rights.txt", "r").read()
+placeholder_text = ""
 READING_AGE_TO_FLESCH_KINCAID_GRADE = {
     '4': [1],
     '5': [1],
@@ -31,10 +33,15 @@ READING_AGE_TO_FLESCH_KINCAID_GRADE = {
     '19': [11,12,13,14,15,16,17,18]
 }
 
-# Init
-os.environ['OPENAI_API_KEY'] = apikey
-# placeholder_text = open("src/storage/human_rights.txt", "r").read()
-placeholder_text = ""
+# Set up API key & OpenAPI
+# Attempt to import apikey. It can either be added to the apikey.py file or added directly to the environment variables
+try:
+    from apikey import apikey
+    os.environ['OPENAI_API_KEY'] = apikey  # Only set the environment variable if the import succeeds
+    api_key_available = True
+except ImportError:
+    api_key_available = False
+    
 llm = ChatOpenAI(temperature=0.9, max_tokens=1000, model_name=OPEN_API_MODEL)
 
 # App
