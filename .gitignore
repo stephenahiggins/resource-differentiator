@@ -2,6 +2,7 @@ venv
 bin
 lib
 apikey.py
-src/__pycache__/
 etc
 share
+**/__pycache__/
+.DS_Store

@@ -33,7 +33,8 @@ READING_AGE_TO_FLESCH_KINCAID_GRADE = {
 
 # Init
 os.environ['OPENAI_API_KEY'] = apikey
-placeholder = open("src/storage/human_rights.txt", "r").read()
+# placeholder_text = open("src/storage/human_rights.txt", "r").read()
+placeholder_text = ""
 llm = ChatOpenAI(temperature=0.9, max_tokens=1000, model_name=OPEN_API_MODEL)
 
 # App
@@ -133,7 +134,7 @@ def main():
     * This happens 3 times
     * If no exact match is found, then the best of 3 is taken
 * Finally, there's an option to send the "best of 3" result is sent to Chat GPT to check for British English spelling, punctuation and grammar. """)
-    content = st.text_area("Enter your content", value=placeholder, height=400)
+    content = st.text_area("Enter your content", value=placeholder_text, height=400)
     selected_ages = st.multiselect("Select target reading ages:", READING_AGE_TO_FLESCH_KINCAID_GRADE.keys())
 
     if st.button('Differentiate 🚀'):
