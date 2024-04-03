@@ -1,5 +1,7 @@
 activate:
 	source ./bin/activate
+install: 
+	pip3 install -r requirements.txt
 deactivate:
 	deactivate
 freeze: 
