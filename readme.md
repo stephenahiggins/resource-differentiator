@@ -1,4 +1,5 @@
 # Differentiator By Reading Age Test
+![](resources/images/exact_match_readme.png)
 ## About The Project
 * This demo uses some default text from the [Hodder OCR Geography A Level textbook on human rights](https://www.hoddereducation.com/media/resources/he/Geography/A-level/9781471858703/OCR-A-level-Geography-sample-chapter.pdf). This can be overwritten.
 * It then uses Chat GPT to attempt to differentiate the work for the selected reading ages. 

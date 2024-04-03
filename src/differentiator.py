@@ -10,6 +10,7 @@ from apikey import apikey
 OPEN_API_MODEL = "gpt-4-turbo-preview"
 # OPEN_API_MODEL = "gpt-3.5-turbo"
 MAX_ATTEMPTS = 3
+FK_GRADE_OFFSET = 1 # Offset to ensure the text is below the target grade. I don't know why, but ChatGPT seems to "aim high" with the FK grade
 DEBUG_DISABLE_BRITISH_ENGLISH_CORRECTION = True
 os.environ['OPENAI_API_KEY'] = apikey
 placeholder = open("src/storage/human_rights.txt", "r").read()
@@ -88,7 +89,8 @@ def differentiate_and_correct_document(document, target_reading_age, llm):
         differentiation_chain = LLMChain(llm=llm, prompt=differentiation_template, verbose=True)
         
         with st.spinner(f'Processing for age {target_reading_age}, attempt {attempt}...'):
-            differentiation_run = differentiation_chain.run(target_fk_grade=str(target_fk_grade), document=document)
+            target_fk_grade_offset = int(target_fk_grade - FK_GRADE_OFFSET);
+            differentiation_run = differentiation_chain.run(target_fk_grade=str(target_fk_grade_offset), document=document)
             current_text = differentiation_run  # Assume differentiation_run returns the text
             # Setup "closest match" variables
             calculated_reading_age = calculate_reading_age_of_text(current_text)
