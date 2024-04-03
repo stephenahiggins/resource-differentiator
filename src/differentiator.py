@@ -130,7 +130,7 @@ def main():
     * If no exact match is found, then the best of 3 is taken
 * Finally, there's an option to send the "best of 3" result is sent to Chat GPT to check for British English spelling, punctuation and grammar. """)
     content = st.text_area("Enter your content", value=placeholder, height=400)
-    selected_ages = st.multiselect("Select target reading ages:", READING_AGE_TO_FLESCH_KINCAID_GRADE.keys(), default=['6'])
+    selected_ages = st.multiselect("Select target reading ages:", READING_AGE_TO_FLESCH_KINCAID_GRADE.keys())
 
     if st.button('Differentiate 🚀'):
         if content:
