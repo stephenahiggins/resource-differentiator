@@ -12,10 +12,6 @@ OPEN_API_MODEL = "gpt-4-turbo-preview"
 MAX_ATTEMPTS = 3
 FK_GRADE_OFFSET = 1 # Offset to ensure the text is below the target grade. I don't know why, but ChatGPT seems to "aim high" with the FK grade
 DEBUG_DISABLE_BRITISH_ENGLISH_CORRECTION = True
-os.environ['OPENAI_API_KEY'] = apikey
-placeholder = open("src/storage/human_rights.txt", "r").read()
-llm = ChatOpenAI(temperature=0.9, max_tokens=1000, model_name=OPEN_API_MODEL)
-
 READING_AGE_TO_FLESCH_KINCAID_GRADE = {
     '4': [1],
     '5': [1],
@@ -35,6 +31,12 @@ READING_AGE_TO_FLESCH_KINCAID_GRADE = {
     '19': [11,12,13,14,15,16,17,18]
 }
 
+# Init
+os.environ['OPENAI_API_KEY'] = apikey
+placeholder = open("src/storage/human_rights.txt", "r").read()
+llm = ChatOpenAI(temperature=0.9, max_tokens=1000, model_name=OPEN_API_MODEL)
+
+# App
 def reading_age_to_fk_grade(reading_age):
     try:
         return READING_AGE_TO_FLESCH_KINCAID_GRADE[str(reading_age)]
