@@ -1,8 +1,7 @@
 # Differentiator By Reading Age Test
 ![](resources/images/exact_match_readme.png)
 ## About The Project
-* This demo uses some default text from the [Hodder OCR Geography A Level textbook on human rights](https://www.hoddereducation.com/media/resources/he/Geography/A-level/9781471858703/OCR-A-level-Geography-sample-chapter.pdf). This can be overwritten.
-* It then uses Chat GPT to attempt to differentiate the work for the selected reading ages. 
+* The demo uses Chat GPT to attempt to differentiate the work for the selected reading ages. 
 * The content returned from ChatGPT is then checked against the Flesch Kincaid_grade.
     * This is then roughly converted to a "reading age"
 * If the returned text doesn't match the absolute value of the target reading age, the request is re-run. 

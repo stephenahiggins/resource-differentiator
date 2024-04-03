@@ -126,8 +126,7 @@ def differentiate_and_correct_document(document, target_reading_age, llm):
 
 def main():
     st.markdown("""# Differentiator By Reading Age Test
-* This demo takes some sample text (by default a section from the [Hodder OCR Geography A Level textbook on human rights](https://www.hoddereducation.com/media/resources/he/Geography/A-level/9781471858703/OCR-A-level-Geography-sample-chapter.pdf).
-* It then uses Chat GPT to attempt to differentiate the work for the selected reading ages. 
+* The demo uses Chat GPT to attempt to differentiate the work for the selected reading ages. 
 * The content returned from ChatGPT is then checked against the Flesch Kincaid grade.
     * This is then roughly converted to a "reading age"
 * If the returned text doesn't match the absolute value of the target reading age, the request is re-run. 
