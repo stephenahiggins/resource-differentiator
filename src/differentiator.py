@@ -121,7 +121,7 @@ def differentiate_and_correct_document(document, target_reading_age, llm):
             st.warning(f'Attempt {attempt}: Recorded reading age: {calculated_reading_age}')
                 
     # Warn about which attempt was closest to the target age
-    if closest_attempt > 0:
+    if age_diff != 0:
         st.info(f'The closest match to the target age was from attempt #{closest_attempt}.')
     
     # Correct the closest matching text for British English
